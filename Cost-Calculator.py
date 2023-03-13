@@ -62,7 +62,7 @@ for i in range(11,26): #determines the total yearly cost for DSN usaged based on
     services_pro[i]+=yearly_cost
 
 #determines the cost to develope software
-CS_LABOR_COST = 110140 + 100000 #average salary from BLS + a bunch for other costs (literally made up these ones)
+CS_LABOR_COST = 110140 + 100000 #average salary from BLS + a bunch for other costs
 NUM_CS_WORKERS = 60 #number of engineers on the task, based on advsior advice
 total_software_cost = CS_LABOR_COST*NUM_CS_WORKERS*5
 total_software_cost_pro = total_software_cost/8 #this number is based on the Gantt chart
