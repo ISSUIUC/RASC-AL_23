@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[12]:
 
 
 import numpy as np
@@ -10,16 +10,16 @@ print("This script calculates the price for MORROW.")
 
 #initializes cost catagories
 operations_pro = np.zeros(26) #yearly operations cost over the whole project lifecycle
-operations_total = 0 #the total cost of operating MORROW once its operation - e.g. cost of ground control employees
+operations_total = 0 #the total cost of operating MITHRIL once its operation - e.g. cost of ground control employees
 
 services_pro = np.zeros(26) #yearly services cost over the whole project lifecycle
 services_total = 0 #total cost of services, e.g. launch or use of the DSN antennas
 
 design_pro = np.zeros(26) #yearly design cost over the whole project lifecycle
-design_total = 0 #total cost of the design of MORROW
+design_total = 0 #total cost of the design of MITHRIL
 
 fabrication_pro = np.zeros(26) #yearly fabrication cost over the whole project lifecycle
-fabrication_total = 0 #total cost of fabricating MORROW
+fabrication_total = 0 #total cost of fabricating MITHRIL
 
 total_cost = 0
 
@@ -31,27 +31,28 @@ VULCAN_LAUNCH_COST = 110*10**6
 
 OP_COST_BASELINE = 1.5*10**8 #from Perserverence
 
-DRILL_PRICE = 663000 
+DRILL_PRICE = 663000 #from some website, check the MITHRIL tech paper
 
 AMOUNT_METHANE = 400000 #kg
 AMOUNT_LOX = 500000 #kg
 
-STORAGE_TANK_SIZE = AMOUNT_LOX/1141 
+STORAGE_TANK_SIZE = AMOUNT_LOX/1141 #m^3 NEEDS UPDATES
 
 ATHLETE_PRICE = 3*10**9 #based on the price of the Perserverance Rover
-SEV_PRICE = 3*10**9/2 
+SEV_PRICE = 3*10**9/2
 PRECURSOR_PRICE = 3*10**9
 
-DSN_HOURS = 8000 #estimae
+DSN_HOURS = 8000 #mostly arbitrary
 DSN_BASE_RATE = 1792 #The Rb quoted price from the DSN Mission Support Definition and Commitments Office.
 TTC_COST = 300000
 NETWORK_ACCESS_FEE = 2700*12
 MIM_COST = 290000
 RF_TEST_COST = 120000
 
-mars_factor = (80000000/28000) 
-#factor to scale terrestrial cost to martian cost. currently based on price ratio of ingenuinty
-#and a drone. Future work will update it to include more ratios.
+mars_factor = (((8*10**7)/(2.8*10**4)) + ((6.27*10**8)/(2.9*10**8)) + ((2.46*10**9)/(2.9*10**8)) + ((3.2*10**9)/(2.5*10**5))) / 4
+#ah the beautiful and magnificent Mars factor. Basically the cost for a lot of this stuff
+# is based on the cost of a terrestrial system and the mars factor scales it up to a reasonable price for Mars.
+# Average of four different terrestial and mars equivalents to get something scalable.
 
 #determines price of communications
 services_pro[11]+=MIM_COST+RF_TEST_COST+NETWORK_ACCESS_FEE
@@ -62,15 +63,15 @@ for i in range(11,26): #determines the total yearly cost for DSN usaged based on
     services_pro[i]+=yearly_cost
 
 #determines the cost to develope software
-CS_LABOR_COST = 110140 + 100000 #average salary from BLS + a bunch for other costs
-NUM_CS_WORKERS = 60 #number of engineers on the task, based on advsior advice
+CS_LABOR_COST = 110140 + 100000 #average salary from BLS + a bunch for other costs (literally made up these ones)
+NUM_CS_WORKERS = 60 #number of engineers on the task (Lembeck randomly said 30 engineers)
 total_software_cost = CS_LABOR_COST*NUM_CS_WORKERS*5
 total_software_cost_pro = total_software_cost/8 #this number is based on the Gantt chart
 for i in range(3,11):
     design_pro[i]+=total_software_cost_pro
     
 #determines the cost for operations
-op_cost_modifier = 3
+op_cost_modifier = 3 #make new something for this possibly????
 for i in range(11,26):
     operations_pro[i] = OP_COST_BASELINE*op_cost_modifier
     op_cost_modifier = op_cost_modifier-.1
@@ -94,7 +95,7 @@ services_pro[21] += VULCAN_LAUNCH_COST
 services_pro[23] += VULCAN_LAUNCH_COST
 services_pro[12] += num_launches_Starships*STARSHIP_LAUNCH_COST
 
-#determines cost of Pylon
+#determines cost of KRUSTY
 Pylon_cost = 5500*470
 Pylon_cost_fab = Pylon_cost*.75
 Pylon_cost_design = Pylon_cost*.25
@@ -105,7 +106,9 @@ for i in range(2,10):
 for i in range (11,12):
     fabrication_pro[i] += Pylon_cost_fab_pro
 
-#determines refining cost
+#determines SABER cost
+# I coined (probably tbh idk if anyone else has said it) the term "Fiscal Gymnastics" after doing this one.
+# Full explenation in the paper but honestly there is so much bullshit involved here its insane. 
 price_per_barrel_oil = 25000
 price_per_gallon_oil = price_per_barrel_oil/42
 price_per_kg_oil = price_per_gallon_oil*3.45
@@ -133,7 +136,7 @@ for i in range(2,10):
 for i in range(8,12):
     fabrication_pro[i]+=storage_cost_fab_pro
 
-#determines Rodwell cost
+#determines STING cost
 sting_cost = DRILL_PRICE*mars_factor
 sting_cost_design = sting_cost*(1105/1739)
 sting_cost_fab = sting_cost*(634/1739)
@@ -233,8 +236,6 @@ total_cost_pro = design_pro+fabrication_pro+services_pro+operations_pro
 
 
 print("The total calculated cost for MORROW is: ", "$","{:,}".format(np.round(total_cost)))
-
-
 # 
 
 # 
